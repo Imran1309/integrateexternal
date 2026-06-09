@@ -1,0 +1,13 @@
+{
+  "name": "secure-api-oauth-dashboard",
+  "version": "1.0.0",
+  "description": "OAuth concepts, external API integrations, rate limiting, and error handling dashboard.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

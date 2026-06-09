@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Hub & Secure OAuth Dashboard</title>
+  <!-- Google Fonts: Outfit (Display & UI), JetBrains Mono (Code/Metadata) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Background Decorative Glowing Blobs -->
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+  <div class="glow-blob blob-3"></div>
+
+  <!-- Main Grid Layout -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-area">
+        <div class="logo-icon">🔑</div>
+        <div class="logo-text">
+          <h1>APISecure</h1>
+          <span>Developer Console</span>
+        </div>
+      </div>
+      
+      <nav class="nav-menu">
+        <button class="nav-btn active" data-tab="tab-dashboard">
+          <span class="icon">📊</span> Dashboard Status
+        </button>
+        <button class="nav-btn" data-tab="tab-oauth">
+          <span class="icon">🛡️</span> OAuth 2.0 Playground
+        </button>
+        <button class="nav-btn" data-tab="tab-external">
+          <span class="icon">🌐</span> External API Gateway
+        </button>
+        <button class="nav-btn" data-tab="tab-chaos">
+          <span class="icon">🐵</span> Chaos & Rate Limiter
+        </button>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="server-status-pill online">
+          <span class="status-dot"></span> Server: Online
+        </div>
+        <p>API Console v1.0.0</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Window -->
+    <main class="main-content">
+      
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="page-title-area">
+          <h2 id="current-tab-title">Dashboard Status</h2>
+          <p id="current-tab-desc">Monitor server health, cache stats, and API rate limits in real-time.</p>
+        </div>
+        
+        <div class="user-profile-widget" id="user-profile-widget">
+          <div class="profile-info-anon">
+            <span class="avatar-placeholder">?</span>
+            <div class="text-group">
+              <span class="profile-name">Guest User</span>
+              <span class="profile-role">Unauthorized</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- TAB 1: DASHBOARD -->
+      <section class="tab-pane active" id="tab-dashboard">
+        <!-- Stats Cards Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="card-icon">⚡</div>
+            <div class="card-content">
+              <h3>Gateway Rate Limit</h3>
+              <div class="stat-value" id="dash-rate-limit">5 / 5</div>
+              <p class="stat-desc">Remaining Requests</p>
+            </div>
+            <div class="card-progress">
+              <div class="progress-bar" id="rate-progress" style="width: 100%"></div>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="card-icon">🔑</div>
+            <div class="card-content">
+              <h3>OAuth Access Token</h3>
+              <div class="stat-value font-mono" id="dash-token-status">None</div>
+              <p class="stat-desc" id="dash-token-desc">Not authenticated</p>
+            </div>
+            <div class="card-progress">
+              <div class="progress-bar" id="token-progress" style="width: 0%; background: var(--accent-success)"></div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="card-icon">💾</div>
+            <div class="card-content">
+              <h3>Gateway Cache Hits</h3>
+              <div class="stat-value" id="dash-cache-hits">0</div>
+              <p class="stat-desc">Requests served from cache</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="card-icon">🎯</div>
+            <div class="card-content">
+              <h3>Total API Actions</h3>
+              <div class="stat-value" id="dash-total-calls">0</div>
+              <p class="stat-desc">Calls in current session</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Architecture Card -->
+        <div class="content-card info-card">
+          <div class="card-header">
+            <h3>🔒 Security & API Integration Overview</h3>
+          </div>
+          <div class="card-body">
+            <p>Welcome to the API security laboratory. This dashboard demonstrates three critical pillars of production-grade software development:</p>
+            <div class="pillars-grid">
+              <div class="pillar-box">
+                <h4>1. OAuth 2.0 Auth Protocol</h4>
+                <p>Learn security standards using the Authorization Code Grant Flow with Refresh Tokens. Authenticate securely, acquire scoped access tokens, and access protected resources.</p>
+              </div>
+              <div class="pillar-box">
+                <h4>2. External API Gateway</h4>
+                <p>Observe proxy forwarding, request scrubbing, and memory caching mechanisms that decrease external API load (Open-Meteo & GitHub APIs) and improve latency.</p>
+              </div>
+              <div class="pillar-box">
+                <h4>3. Rate Limiting & Chaos Monkey</h4>
+                <p>Examine server protection via client IP rate limits (standard headers returned) and handle API failures gracefully through real-time interceptors.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: OAUTH PLAYGROUND -->
+      <section class="tab-pane" id="tab-oauth">
+        <!-- Interactive Step Timeline -->
+        <div class="oauth-flow-visualizer">
+          <div class="flow-step active" id="step1-indicator">
+            <div class="step-num">1</div>
+            <div class="step-title">Authorize Client</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="flow-step" id="step2-indicator">
+            <div class="step-num">2</div>
+            <div class="step-title">Exchange Auth Code</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="flow-step" id="step3-indicator">
+            <div class="step-num">3</div>
+            <div class="step-title">Secure API Query</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="flow-step" id="step4-indicator">
+            <div class="step-num">4</div>
+            <div class="step-title">Token Refresh</div>
+          </div>
+        </div>
+
+        <div class="playground-layout">
+          <!-- Left: Action Console -->
+          <div class="console-panel">
+            <div class="content-card">
+              <div class="card-header">
+                <h3>OAuth 2.0 Interactive Controller</h3>
+              </div>
+              <div class="card-body">
+                <!-- Config Fields -->
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label>Client ID</label>
+                    <input type="text" id="oauth-client-id" value="sec_dashboard_client_xyz" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label>Client Secret</label>
+                    <input type="text" id="oauth-client-secret" value="super_secret_developer_key" disabled>
+                  </div>
+                </div>
+                
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label>Scope</label>
+                    <input type="text" id="oauth-scope" value="profile email">
+                  </div>
+                  <div class="form-group">
+                    <label>Redirect URI</label>
+                    <input type="text" id="oauth-redirect-uri" value="http://localhost:3000/oauth_callback.html" disabled>
+                  </div>
+                </div>
+
+                <div class="action-divider"></div>
+
+                <!-- Stage Buttons -->
+                <div class="oauth-stage-actions">
+                  <div class="stage-action-box" id="action-box-1">
+                    <span class="badge">Step 1</span>
+                    <p>Request user authorization. Opens a simulated Consent Screen.</p>
+                    <button class="btn btn-primary" id="btn-oauth-auth">Authorize App (OAuth Request)</button>
+                  </div>
+
+                  <div class="stage-action-box disabled" id="action-box-2">
+                    <span class="badge">Step 2</span>
+                    <p>Exchange the authorization code for Access & Refresh tokens.</p>
+                    <button class="btn btn-accent" id="btn-oauth-token" disabled>Exchange Auth Code</button>
+                  </div>
+
+                  <div class="stage-action-box disabled" id="action-box-3">
+                    <span class="badge">Step 3</span>
+                    <p>Query secure resource server endpoint using your Bearer token.</p>
+                    <button class="btn btn-success" id="btn-oauth-query" disabled>Query Secure API</button>
+                  </div>
+
+                  <div class="stage-action-box disabled" id="action-box-4">
+                    <span class="badge">Step 4</span>
+                    <p>Access tokens expire in 60s. Use refresh token to renew without user prompt.</p>
+                    <button class="btn btn-secondary" id="btn-oauth-refresh" disabled>Refresh Access Token</button>
+                  </div>
+                </div>
+
+                <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+                  <button class="btn btn-danger-outline btn-xs" id="btn-oauth-clear">Clear Authentication Session</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Data Logs & Values -->
+          <div class="data-panel">
+            <!-- OAuth State Cards -->
+            <div class="content-card console-output">
+              <div class="card-header">
+                <h3>Token Vault & Auth Credentials</h3>
+              </div>
+              <div class="card-body">
+                <div class="data-row">
+                  <span class="data-label">Auth Code:</span>
+                  <span class="data-value font-mono" id="val-auth-code">Not acquired</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Access Token:</span>
+                  <span class="data-value font-mono token-highlight" id="val-access-token">Not acquired</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Token Expiry:</span>
+                  <span class="data-value font-mono" id="val-token-expiry">N/A</span>
+                </div>
+                <div class="data-row">
+                  <span class="data-label">Refresh Token:</span>
+                  <span class="data-value font-mono" id="val-refresh-token">Not acquired</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terminal Log -->
+            <div class="content-card terminal-card">
+              <div class="card-header">
+                <h3>Console Debug Logs</h3>
+                <button class="btn btn-secondary btn-xs" id="btn-clear-logs">Clear</button>
+              </div>
+              <div class="card-body terminal-body" id="oauth-terminal">
+                <div class="terminal-line system">[System] OAuth 2.0 Playground Initialized. Ready for authorization flow.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secure Data Display (Appears when step 3 completes) -->
+        <div class="content-card profile-card hidden" id="profile-container">
+          <div class="card-header">
+            <h3>🔐 Protected Resource API Response</h3>
+          </div>
+          <div class="card-body profile-body">
+            <img id="profile-avatar" src="" alt="Profile picture">
+            <div class="profile-details">
+              <h4 id="profile-name">John Doe</h4>
+              <p id="profile-role">User Role</p>
+              <div class="profile-meta-grid">
+                <div><strong>Email:</strong> <span id="profile-email">email@domain.com</span></div>
+                <div><strong>Permissions:</strong> <span id="profile-scopes" class="scopes-pill">scope</span></div>
+                <div><strong>Auth Method:</strong> <span id="profile-auth-method" class="font-mono text-success">method</span></div>
+                <div><strong>Server Query Time:</strong> <span id="profile-time" class="font-mono">time</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: EXTERNAL API GATEWAY -->
+      <section class="tab-pane" id="tab-external">
+        <div class="api-gateway-layout">
+          <!-- Column 1: API Configuration -->
+          <div class="gateway-config">
+            <!-- Weather Card -->
+            <div class="content-card">
+              <div class="card-header">
+                <h3>🌤️ Proxy Weather API (Open-Meteo)</h3>
+              </div>
+              <div class="card-body">
+                <p class="section-desc">Proxy weather calls securely through our Express gateway to handle caching and CORS encapsulation.</p>
+                <div class="form-group">
+                  <label>Select Target City</label>
+                  <select id="weather-city-select">
+                    <option value="London" data-lat="51.5074" data-lon="-0.1278">London, UK</option>
+                    <option value="New York" data-lat="40.7128" data-lon="-74.0060">New York, USA</option>
+                    <option value="Tokyo" data-lat="35.6762" data-lon="139.6503">Tokyo, Japan</option>
+                    <option value="Sydney" data-lat="-33.8688" data-lon="151.2093">Sydney, Australia</option>
+                    <option value="Paris" data-lat="48.8566" data-lon="2.3522">Paris, France</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary w-full" id="btn-fetch-weather">Fetch Weather Report</button>
+              </div>
+            </div>
+
+            <!-- GitHub Repository Finder -->
+            <div class="content-card" style="margin-top: 20px;">
+              <div class="card-header">
+                <h3>🐙 Proxy GitHub Repository Search</h3>
+              </div>
+              <div class="card-body">
+                <p class="section-desc">Search public GitHub projects. The backend appends required client agent headers and caches queries.</p>
+                <div class="form-group">
+                  <label>Repository Keyword</label>
+                  <input type="text" id="github-search-input" value="javascript" placeholder="e.g. node, react, css">
+                </div>
+                <button class="btn btn-accent w-full" id="btn-fetch-github">Search GitHub Repos</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: API Outputs -->
+          <div class="gateway-output">
+            <!-- Headers and Cache Status -->
+            <div class="cache-status-pill hidden" id="cache-indicator">
+              <span class="cache-icon">💾</span> Cache Status: <strong id="cache-status-val">MISS</strong>
+            </div>
+
+            <!-- Main Render Area -->
+            <div class="content-card display-console">
+              <div class="card-header">
+                <h3>Gateway Output Console</h3>
+                <span class="font-mono text-secondary" id="gateway-execution-time">0ms</span>
+              </div>
+              <div class="card-body" id="gateway-render-area">
+                <div class="empty-state">
+                  <div class="empty-icon">📡</div>
+                  <p>Send a request from the panel to see formatted responses.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: CHAOS & RATE LIMITS -->
+      <section class="tab-pane" id="tab-chaos">
+        <div class="chaos-layout">
+          <!-- Left: Chaos Control -->
+          <div class="chaos-control-panel">
+            <!-- Rate Limiter Sandbox -->
+            <div class="content-card">
+              <div class="card-header">
+                <h3>⏱️ Rate Limiter Sandbox</h3>
+              </div>
+              <div class="card-body">
+                <p class="section-desc">The server limits endpoints to <strong>5 requests per 30 seconds</strong>. Send rapid calls below to trigger rate exhaustion and study header responses.</p>
+                
+                <div class="rate-status-container">
+                  <div class="rate-circle-gauge">
+                    <span id="rate-counter-value">5</span>
+                    <small>Left</small>
+                  </div>
+                  <div class="rate-info-text">
+                    <p>Current Status: <strong class="text-success" id="rate-limit-status-label">NORMAL</strong></p>
+                    <p class="text-secondary">Next reset: <span id="rate-reset-label">N/A</span></p>
+                  </div>
+                </div>
+
+                <div class="btn-group-column">
+                  <button class="btn btn-primary" id="btn-fire-rate">Send Simple Request</button>
+                  <button class="btn btn-secondary-outline" id="btn-reset-rate-server">Reset Server-Side Limit</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chaos Monkey Panel -->
+            <div class="content-card" style="margin-top: 20px;">
+              <div class="card-header">
+                <h3>🐵 Chaos Monkey Error Generator</h3>
+              </div>
+              <div class="card-body">
+                <p class="section-desc">Instruct the server gateway to purposely return specific HTTP error status codes. Test frontend error trapping and graceful notifications.</p>
+                
+                <div class="chaos-buttons-grid">
+                  <button class="btn btn-chaos" data-status="400">400 Bad Request</button>
+                  <button class="btn btn-chaos" data-status="401">401 Unauthorized</button>
+                  <button class="btn btn-chaos" data-status="403">403 Forbidden</button>
+                  <button class="btn btn-chaos" data-status="404">404 Not Found</button>
+                  <button class="btn btn-chaos" data-status="429">429 Rate Limit</button>
+                  <button class="btn btn-chaos" data-status="500">500 Server Error</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Rate & Error Response Headers Inspector -->
+          <div class="chaos-inspector-panel">
+            <div class="content-card full-height">
+              <div class="card-header">
+                <h3>🔍 HTTP Network Inspector</h3>
+                <span class="badge" id="inspector-http-status">200 OK</span>
+              </div>
+              <div class="card-body inspector-body">
+                <div class="inspector-section">
+                  <h4>Request URL</h4>
+                  <div class="inspector-url-box font-mono" id="inspector-req-url">GET /api/status</div>
+                </div>
+                
+                <div class="inspector-section">
+                  <h4>Response Headers</h4>
+                  <div class="inspector-code-block font-mono" id="inspector-res-headers">
+                    <!-- Dynamic Headers Go Here -->
+                    (No requests logged)
+                  </div>
+                </div>
+
+                <div class="inspector-section">
+                  <h4>Response Body</h4>
+                  <div class="inspector-code-block font-mono" id="inspector-res-body">
+                    <!-- Dynamic Body goes here -->
+                    (No requests logged)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Global Modal for Simulated Consent Screen (Used inside OAuth workflow) -->
+  <div class="modal-backdrop hidden" id="oauth-consent-modal">
+    <div class="modal-card">
+      <div class="modal-logo">MockOAuth 2.0</div>
+      <h2>App Consent Request</h2>
+      <p class="modal-desc"><strong>Secure Dashboard App</strong> is requesting permissions to access your account details.</p>
+      
+      <div class="modal-scope-box">
+        <div style="font-weight:600; font-size:11px; text-transform:uppercase; color:var(--text-secondary); margin-bottom:6px;">Requested Permissions:</div>
+        <div class="modal-scope-item">
+          <span class="icon-check">✓</span> <span>Read your basic profile (profile)</span>
+        </div>
+        <div class="modal-scope-item">
+          <span class="icon-check">✓</span> <span>Access email address (email)</span>
+        </div>
+      </div>
+      
+      <div class="modal-buttons">
+        <button class="btn btn-deny" id="modal-btn-deny">Deny</button>
+        <button class="btn btn-primary" id="modal-btn-approve">Approve & Authorize</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Include Frontend Logic Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/oauth-playground.js"></script>
+</body>
+</html>
